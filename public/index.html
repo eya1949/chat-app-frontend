@@ -265,9 +265,9 @@
 
                 <!-- chat erea start-->
                 <section class="col-span-4 overflow-auto "><!--py-5 px-6  bg-red-600-->
-
+                    <!--messages-container-->
                     <div
-                        class="translate-x-full lg:translate-x-0 fixed inset-0 h-full lg:relative lg:inset-auto flex flex-col grow w-full border-x border-gray-100 bg-white z-10 transition">
+                        class="translate-x-full lg:translate-x-0 fixed inset-0 h-full lg:relative lg:inset-auto flex flex-col grow w-full border-x border-gray-100 bg-white z-10 transition" id="messages-container">
                         <div class="flex items-center h-24 p-6">
                             <button class="flex items-center justify-center mr-6 lg:hidden" type="button"
                                 aria-label="Back to">
@@ -346,6 +346,7 @@
                                 </div>
                             </div>
                         </div>
+                            
                         <form id="message-form" class="flex items-center gap-3 p-4">
                             <button class="shrink-0 text-gray-400 " type="button" aria-label="Add media to message">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -358,6 +359,7 @@
                             <div class="relative flex w-full max-h-24 overflow-hidden">
                                 <input class="w-full outline-0" type="text" name="message" id="message-input"/>
                             </div>
+                            <!-- button send -->
                             <button
                                 class="flex items-center justify-center shrink-0 w-12 h-12 gb-nav rounded-full overflow-hidden"
                                 type="submit" aria-label="Submit">

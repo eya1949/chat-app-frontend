@@ -28,6 +28,8 @@
             }
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+
 </head>
 
 <body class="h-full">
@@ -316,35 +318,35 @@
                         <div class="flex flex-col grow p-6 bg-chat scrollbar-hide overflow-auto">
                             <div class="py-3">
                                 <div class="flex">
-                                    <div class="relative w-12 h-12 shrink-0 undefind">
+                                     <!-- <div class="relative w-12 h-12 shrink-0 undefind">
                                         <img class="w-full h-full rounded-full overflow-hidden object-cover" width="48"
                                             height="48"
                                             src="/public/asset/christina-wocintechchat-com-lFntEHwQvi4-unsplash.jpeg"
                                             alt="avatar" />
-                                    </div>
+                                    </div>  -->
 
                                     <div class="pl-3">
                                         <div class="flex items-center mb-3">
-                                            <span class="font-bold">Putri Tanjak</span>
-                                            <span class="text-sm text-gray-400 shrink-0 ml-2">4:30 AM</span>
+                                            <span class="font-bold"></span>
+                                            <span class="text-sm text-gray-400 shrink-0 ml-2"></span>
                                         </div>
 
                                         <div class="flex flex-col gap-3 items-start">
                                             <div
                                                 class="max-w-md p-4 rounded-2xl overflow-hidden rounded-tl-none lg-message">
-                                                look at this field! Beautiful!
+                                                
                                             </div>
 
-                                            <div class="max-w-md p-0 rounded-2xl overflow-hidden false bg-message">
+                                            <!-- <div class="max-w-md p-0 rounded-2xl overflow-hidden false bg-message">
                                                 <img class="w-62 h-48" width="300" height="400"
                                                     src="/public/asset/jackson-david-I-mRsT0FVUw-unsplash.jpeg" alt="">
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3 p-4">
+                        <form id="message-form" class="flex items-center gap-3 p-4">
                             <button class="shrink-0 text-gray-400 " type="button" aria-label="Add media to message">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -354,22 +356,18 @@
                                 <!-- typing button -->
                             </button>
                             <div class="relative flex w-full max-h-24 overflow-hidden">
-                                <div class="w-full outline-0" contenteditable="true" tabindex="0" dir="ltr"
-                                    spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
-                                    type your message here...
-                                </div>
+                                <input class="w-full outline-0" type="text" name="message" id="message-input"/>
                             </div>
                             <button
                                 class="flex items-center justify-center shrink-0 w-12 h-12 gb-nav rounded-full overflow-hidden"
-                                type="button" aria-label="Submit">
+                                type="submit" aria-label="Submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                 </svg>
-
                             </button>
-                        </div>
+                        </form>
                     </div>
 
                 </section>
@@ -579,6 +577,37 @@
             </div>
         </div>
     </div>
+    <script>
+        // Define a variable 'socket' and initialize it with a new Socket.IO instance connected to the server at 'http://localhost:8080'
+        const socket = window.io('http://localhost:8080');
+        // Define a variable 'msgForm' and assign it the form element with the id 'message-form'
+        const msgForm = document.querySelector('#message-form')
+        // Define a variable 'msgInput' and assign it the input element with the id 'message-input'
+        const msgInput = document.querySelector('#message-input')
+        // Define a variable 'msgContainer' and assign it the div element with the id 'messages-container'
+        const msgContainer = document.querySelector('#messages-container')
+        
+        // Add an event listener to the 'msgForm' variable for the 'submit' event
+        msgForm.onsubmit = e => {
+        // Prevent the default form submission behavior
+        e.preventDefault();
+        // Get the value of the 'msgInput' variable and assign it to the variable 'msg'
+        const msg = msgInput.value;
+        
+        // Emit a 'message' event to the server with the message as the payload
+        socket.emit('message', {msg});
+        // Clear the value of the 'msgInput' variable
+        msgInput.value = '';
+        };
+        
+        
+        // Added event listener
+        socket.on("message", ({msg}) => {
+        // Append a new paragraph element containing the message to the 'msgContainer' variable
+        msgContainer.innerHTML += `<p> ${msg} </p>`;
+        });
+        </script>
+        
 </body>
 
 </html>
